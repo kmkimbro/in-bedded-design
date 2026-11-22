@@ -1,6 +1,6 @@
-# Design Process for Claude Code — Skeleton
+# in:bedded design
 
-A design process that builds from real production code: brief → stage → build → review → handoff.
+A design process for Claude Code that builds from real production code: brief → stage → build → review → handoff.
 
 ## What's in here
 
