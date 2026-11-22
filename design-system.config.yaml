@@ -1,0 +1,48 @@
+# Design process configuration
+# This is the ONLY file you should need to edit when moving to a new repo.
+# Every skill and agent reads paths and settings from here.
+
+paths:
+  tokens: src/tokens            # sub-atomics: color, typography, spacing, radius, elevation, motion
+  components: src/components    # component library (buttons, expanders, sliders...)
+  design_context: design-context
+
+design_context:
+  organisms: design-context/organisms
+  personas: design-context/personas
+  workflows: design-context/workflows
+  research: design-context/research     # synthesised findings only (raw calls stay in Granola)
+  briefs: design-context/briefs
+  templates: design-context/templates
+
+git:
+  base_branch: main             # the branch new work branches from
+  protected_branches: [main, master]
+  branch_prefix: design/
+  # Branch names:
+  #   with a ticket:    design/LIN-482-short-name
+  #   without a ticket: design/2026-11-21-short-name
+
+tickets:
+  tool: linear
+  id_pattern: "[A-Z]+-[0-9]+"   # e.g. LIN-482
+  offer_to_create: true         # offer a Linear ticket when a brief starts without one
+  default_team: ""              # fill in your Linear team key, e.g. "DES"
+
+research:
+  raw_source: granola           # customer calls are searched in Granola via its connector
+  synthesised: design-context/research
+
+brief:
+  gate: flag-and-continue       # gaps are flagged, never blocking
+  remind_gaps_before_pr: true   # in production, repeat open gaps before opening a PR
+
+stages:
+  exploration:
+    variations: 3
+    allow_new_patterns: true    # must be labelled "NOT IN SYSTEM"
+  production:
+    allow_new_patterns: false
+    require_states: [default, hover, focus, active, disabled, loading, empty, error]
+    accessibility: WCAG 2.2 AA
+    open_pull_request: true
