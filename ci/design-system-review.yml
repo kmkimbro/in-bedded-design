@@ -1,0 +1,53 @@
+# Design system review on every pull request.
+# Comments only — never blocks merging.
+#
+# To use: copy this file to .github/workflows/design-system-review.yml in your product repo,
+# and add an ANTHROPIC_API_KEY secret (or use claude_code_oauth_token instead).
+# Docs: https://github.com/anthropics/claude-code-action
+
+name: Design System Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+jobs:
+  design-system-review:
+    # Skip drafts; review when the PR is ready
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            You are reviewing this pull request for design system compliance only.
+            The PR branch is already checked out in the current working directory.
+
+            1. Read design-system.config.yaml, AGENTS.md and .claude/agents/reviewer.md.
+            2. Follow reviewer.md in PR MODE. Get the changes with `gh pr diff`.
+            3. Review ONLY lines added or changed in this PR. Never comment on existing code it didn't touch.
+            4. If the PR has no UI changes, post nothing.
+
+            Posting:
+            - Use `mcp__github_inline_comment__create_inline_comment` (with `confirmed: true`) for specific lines,
+              with a GitHub ```suggestion block only when the fix is clear and certain.
+            - Use `gh pr comment` for ONE summary comment in the reviewer.md report format,
+              ending with the design debt line.
+            - Phrase UX findings as questions that cite the guideline.
+            - Be brief and friendly. This is guidance, not a gate.
+            Only post GitHub comments; don't submit review text as messages.
+
+          claude_args: |
+            --allowedTools "Read,Grep,Glob,mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"

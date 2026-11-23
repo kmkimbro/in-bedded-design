@@ -13,6 +13,7 @@ design_context:
   workflows: design-context/workflows
   research: design-context/research     # synthesised findings only (raw calls stay in Granola)
   briefs: design-context/briefs
+  ux_guidelines: design-context/ux-guidelines   # "when to use which" decision guides
   templates: design-context/templates
 
 git:
@@ -36,6 +37,13 @@ research:
 brief:
   gate: flag-and-continue       # gaps are flagged, never blocking
   remind_gaps_before_pr: true   # in production, repeat open gaps before opening a PR
+
+pr_review:                      # design system review on every pull request (CI)
+  enabled: true
+  blocking: false               # comments only; never blocks merging
+  review_new_code_only: true    # never comment on existing debt the PR didn't touch
+  suggest_fixes: true           # one-click GitHub suggestions where the fix is clear
+  ux_findings_as_questions: true
 
 stages:
   exploration:

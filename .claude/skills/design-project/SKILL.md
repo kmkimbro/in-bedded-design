@@ -11,8 +11,16 @@ You run the whole design process, step by step. Do not skip steps. Do not build 
 
 Input: `$ARGUMENTS` (may be empty).
 
+## Process rules (apply only while running this skill)
+These are the designer's process rules. They are on top of the design system rules in `AGENTS.md`, which always apply.
+- **Always work on a new branch** (Step 5). Skip only if the user explicitly says to work on the current branch.
+- **Every build has a stage**: exploration or production. If it's unknown, ask (Step 4).
+- **No build before the brief is approved** (Step 2).
+- **Cite users:** any claim about users points to a persona, workflow, research file or Granola meeting.
+- **Read organism rules fresh** for every build. Never rely on memory of them.
+
 ## Step 0 — Load settings
-Read `design-system.config.yaml` and `CLAUDE.md`. Use these paths and settings for everything below.
+Read `design-system.config.yaml` and `AGENTS.md`. Use these paths and settings for everything below.
 
 ## Step 1 — Work out what you were given
 - Matches `tickets.id_pattern` (e.g. `LIN-482`) → a Linear ticket. Fetch it with the Linear connector.
